@@ -72,12 +72,12 @@ export default {
   validations: {
     form: {
       code: {
-        required,
+        // required,
         minLength: minLength(10),
         maxLength: maxLength(10)
       },
       document: {
-        required,
+        // required,
         minLength: minLength(8),
         maxLength: maxLength(8)
       }

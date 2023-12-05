@@ -145,7 +145,7 @@ export default {
       page: 1,
       max: 50,
       form: {
-        event: '',
+        event: 1,
         award: '',
       }
     };
