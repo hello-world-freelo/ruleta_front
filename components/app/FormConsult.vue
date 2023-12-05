@@ -89,12 +89,15 @@ export default {
       this.$v.form.$touch()
       if (this.$v.$invalid) return
 
-      const {
-        code,
-        document
-      } = this.form
+      // const {
+      //   code,
+      //   document
+      // } = this.form
 
-      const url = `/eventos/search-participante/${code}/${document}`
+      let codex = this.form.code == '' ? 0 : this.form.code
+      let documentx = this.form.document == '' ? 0 : this.form.document
+
+      const url = `/eventos/search-participante/${codex}/${documentx}`
 
       publicService.get(url).then(resp => {
         const data = resp.data
