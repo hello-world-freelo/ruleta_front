@@ -105,9 +105,9 @@ export default {
           const html =  `<img class="small_icon" src="${require("@/static/icon_circle-check-solid.svg")}"/>
             <p style="font-weight: 700; margin: 10px 0px; color: #3D3D67; font-size: 12px;">
               <span style="font-weight:normal;display:block;margin-bottom:10px;font-size:12px">
-                ¡Hola ${data.data[0].nombres}
+                <b>¡Hola ${data.data[0].nombres}</b>
               </span>
-              <span style="font-weight:normal;display:block;font-size:12px">
+              <span style="font-weight:normal;display:block;font-size:14px">
                 Estás oficialmente en el Sorteo 2023 con el código <b>${data.data[0].codigo}</b>. <br> ¡Buena suerte!
               </span>
             </p>`
