@@ -70,7 +70,7 @@ export default {
         required
       },
       comment: {
-        required
+        // required
       },
       status: {
         required

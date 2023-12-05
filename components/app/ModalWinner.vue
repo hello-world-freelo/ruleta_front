@@ -10,7 +10,7 @@
       <p class="text-win">
         Eres el afortunado ganador del premio <span>{{ winner.selectedAward.nombre }}</span>
         en nuestra emocionante ruleta.
-        la persona que recibira el premio esta presente
+        La persona que recibirá el premio esta presente
       </p>
     </div>
 

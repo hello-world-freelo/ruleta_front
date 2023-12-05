@@ -17,7 +17,7 @@
           </vs-input>
          </div>
 
-          <div class="mb-4" :class="{ 'form-group--error': $v.form.password.$error }">
+          <div class="mb-6" :class="{ 'form-group--error': $v.form.password.$error }">
             <label class="text-sm">Contraseña</label>
             <vs-input block type="password" class="mb-4" v-model.trim="$v.form.password.$model" placeholder="">
               <!-- <template #icon>
@@ -26,10 +26,10 @@
             </vs-input>
           </div>
 
-          <p class="mb-6 text-xs text-right">
+          <!-- <p class="mb-6 text-xs text-right">
             <a style="color: #344767;" href="#" class="text-primary text-gradient font-weight-bold underline">¿Olvidaste tu contraseña? </a>
-          </p>
-
+          </p> -->
+          
           <vs-button
           size="large"
           block
