@@ -73,7 +73,7 @@ export default {
     form: {
       code: {
         // required,
-        minLength: minLength(10),
+        minLength: minLength(1),
         maxLength: maxLength(10)
       },
       document: {
