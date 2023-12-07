@@ -70,4 +70,6 @@ More information about the usage of this directory in [the documentation](https:
 
 npm run generate
 
-http://localhost:81/sorteos/iniciar-sesion/
+https://munichosica.pe/sorteos/
+
+https://munichosica.pe/sorteos/iniciar-sesion/
