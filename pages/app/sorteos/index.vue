@@ -110,6 +110,11 @@ export default {
       title: "Sorteos", // Other meta information
     };
   },
+  watch: {
+    gamesDetail([data]) {
+      this.form.event = data.idEvento
+    }
+  },
   computed: {
     ...mapGetters(['getIdUser']),
     awards() {
@@ -145,7 +150,7 @@ export default {
       page: 1,
       max: 50,
       form: {
-        event: 1,
+        event: '',
         award: '',
       }
     };
@@ -156,7 +161,7 @@ export default {
     store.dispatch('winner/initialize')
   },
   created() {
-    this.options = JSON.parse(JSON.stringify(optionsData));
+    this.options = JSON.parse(JSON.stringify(optionsData))
   },
   methods: {
     onButtonPress() {
@@ -252,10 +257,7 @@ export default {
       if(reload) {
         this.showDialogWinner = false
         this.isLoading = false
-        this.form = {
-          event: '',
-          award: '',
-        }
+        this.form.award = ''
         await this.$store.dispatch('winner/initialize')
         this.keyRamdom = Math.random()
       }

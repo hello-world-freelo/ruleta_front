@@ -70,7 +70,7 @@ export default {
         required
       },
       comment: {
-        // required
+        required
       },
       status: {
         required
@@ -124,8 +124,9 @@ export default {
         method,
         url,
         data: payload
-      }).then(resp => {
+      }).then(async resp => {
         const res = resp.data
+        await this.closeModal(true)
         this.$swal.fire({
           html: `<img class="small_icon" src="${require("@/static/icon_circle-check-solid.svg")}"><p class="popup-content-text">
             ${res.msg}
@@ -136,7 +137,6 @@ export default {
           },
           confirmButtonText: "Aceptar",
         })
-        this.closeModal(true)
       })
       .catch(() => {
         console.error('Ocurrio un error con el servicio.')
