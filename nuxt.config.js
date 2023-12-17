@@ -1,6 +1,9 @@
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
+  router: {
+    base: '/sorteos/'
+  },
 
   router: {
     base: '/sorteos/'
@@ -19,7 +22,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/ico.png' },
+      { rel: 'icon', type: 'image/x-icon', href: './ico.png' },
       // { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,600;0,700;0,800;1,700&display=swap' }
     ]
   },
