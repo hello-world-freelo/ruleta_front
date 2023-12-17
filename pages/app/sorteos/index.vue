@@ -13,8 +13,8 @@
         </div>
         <div class="w-full" v-if="awards.length">
           <vs-select :disabled="isLoading" :block="true" filter placeholder="Seleccionar premio a sortear" v-model="form.award" label="Seleccionar un premio">
-            <vs-option v-for="(award, i) in awards" :key="i" :label="award.nombre" :value="award.idPremio">
-              {{ award.nombre }}
+            <vs-option v-for="(award, i) in awards" :key="i" :label="`${award.nombre} (100)`" :value="award.idPremio">
+              {{ award.nombre }} (100)
             </vs-option>
           </vs-select>
         </div>

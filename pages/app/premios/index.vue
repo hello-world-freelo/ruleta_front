@@ -14,6 +14,7 @@
           <template #thead>
             <vs-tr>
               <vs-th> Nombre </vs-th>
+              <vs-th> Cantidad </vs-th>
               <vs-th> Fecha de creación </vs-th>
               <vs-th class="flex justify-center"> Acciones </vs-th>
             </vs-tr>
@@ -29,6 +30,9 @@
             >
               <vs-td>
                 {{ tr.nombre }}
+              </vs-td>
+              <vs-td>
+                100
               </vs-td>
               <vs-td>
                 {{ $formatDate(tr.created_at, "DD-MM-YYYY") }}

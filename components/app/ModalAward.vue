@@ -11,6 +11,12 @@
         </vs-input>
       </div>
 
+      <div class="mb-8">
+        <vs-input type="number" block v-model="form.quantity" label="Cantidad">
+          <!-- <template #icon> @ </template> -->
+        </vs-input>
+      </div>
+
       <template #footer>
         <div class="footer-dialog">
           <vs-button :disabled="$v.form.$invalid" @click.prevent="checkStructure" block> Guardar </vs-button>
@@ -41,7 +47,8 @@ export default {
         update_award: "/eventos/update-premio/"
       },
       form: {
-        name: ""
+        name: "",
+        quantity: ""
       }
     }
   },
@@ -50,6 +57,9 @@ export default {
       name: {
         required,
         minLength: minLength(2)
+      },
+      quantity: {
+        required
       }
     }
   },
@@ -66,8 +76,9 @@ export default {
 
     async typeRequestEvaluation() {
       if (!this.isRegister) {
-        const { nombre } = this.item
+        const { nombre, cantidad } = this.item
         this.form.name = nombre
+        this.form.quantity = cantidad
       }
     },
 
@@ -80,6 +91,7 @@ export default {
       const payload = {
         idUsuario: this.getIdUser,
         nombre: this.form.name,
+        cantidad: this.form.quantity
       }
 
       this.onSubmit(payload)
