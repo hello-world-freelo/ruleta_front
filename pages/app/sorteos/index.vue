@@ -13,8 +13,8 @@
         </div>
         <div class="w-full" v-if="awards.length">
           <vs-select :disabled="isLoading" :block="true" filter placeholder="Seleccionar premio a sortear" v-model="form.award" label="Seleccionar un premio">
-            <vs-option v-for="(award, i) in awards" :key="i" :label="`${award.nombre} (100)`" :value="award.idPremio">
-              {{ award.nombre }} (100)
+            <vs-option v-for="(award, i) in awards" :key="i" :label="`${award.nombre} (${award.cantidad})`" :value="award.idPremio">
+              {{ award.nombre }} ({{ award.cantidad }})
             </vs-option>
           </vs-select>
         </div>
@@ -33,7 +33,11 @@
       <vs-table v-if="winners.data?.data" :key="keyRamdom">
         <template #thead>
           <vs-tr>
-            <vs-th> Nombre </vs-th>
+            <vs-th> Código </vs-th>
+            <vs-th> Apellidos y Nombres </vs-th>
+            <vs-th> Nº Documento </vs-th>
+            <vs-th> Tipo Ganador </vs-th>
+            <vs-th> Orden </vs-th>
             <vs-th> Nombre Premio </vs-th>
             <vs-th> Fecha </vs-th>
             <vs-th> Teléfono </vs-th>
@@ -47,7 +51,11 @@
           :key="i"
           v-for="(tr, i) in $vs.getPage(winners.data?.data, page, max)"
           :data="tr">
-            <vs-td> {{ tr.nombres }} </vs-td>
+            <vs-td> {{ tr.codigo }} </vs-td>
+            <vs-td> {{ tr.aPaterno }} {{ tr.aMaterno }}  {{ tr.nombres }}  </vs-td>
+            <vs-td> {{ tr.nroDocumento }} </vs-td>
+            <vs-td> {{ tr.estadoTipoGanador }} </vs-td>
+            <vs-td> {{ tr.orden }} </vs-td>
             <vs-td> {{ tr.premio }} </vs-td>
             <vs-td> {{ tr.fechaEntrega }} </vs-td>
             <vs-td> {{ tr.celular || '-' }} </vs-td>
@@ -165,18 +173,22 @@ export default {
   },
   methods: {
     onButtonPress() {
-
-      const url = "/eventos/sortear-participantes"
+      const url = `/eventos/sortear-participantes/${this.form.award}`
       const method = "get"
-
       return protectedService({
         method,
         url,
       }).then(resp => {
-        const { data } = resp.data
-        this.winner = data
-        this.isCreated = true
-        this.isLoading = true
+        if(!resp.error){
+          const { data } = resp.data
+          this.winner = data
+          this.isCreated = true
+          this.isLoading = true
+        }else{
+          // aqui la logica mensaje que noy mas ganadores
+          console.log(resp.msg);
+        }
+    
       })
       .catch(() => {
         console.error('Ocurrio un error con el servicio.')

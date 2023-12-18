@@ -22,6 +22,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .bg-cover {
-  background-image: url('~assets/img/fondo_login.jpeg')
+  background-image: url('~assets/img/fondo_login.png')
 }
 </style>

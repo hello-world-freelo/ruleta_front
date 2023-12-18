@@ -32,7 +32,7 @@
                 {{ tr.nombre }}
               </vs-td>
               <vs-td>
-                100
+                {{ tr.cantidad }}
               </vs-td>
               <vs-td>
                 {{ $formatDate(tr.created_at, "DD-MM-YYYY") }}

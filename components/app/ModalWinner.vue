@@ -2,8 +2,11 @@
   <vs-dialog class="custom-dialog" width="450px" not-center not-close :value="showModal" @close="closeModal">
     <template #header>
       <h4 class="not-margin">
-        ¡Felicidades <b>{{ $firstCapitalLetter(winner.nombres) }}</b>!
+        ¡Felicidades <b>{{ $firstCapitalLetter(winner.nombres) }} {{ $firstCapitalLetter(winner.aMaterno) }} {{ $firstCapitalLetter(winner.aPaterno) }}</b>!
       </h4>
+      <hr>
+      <h4>Nº DOCUMENTO: <b>{{ $firstCapitalLetter(winner.nroDocumento) }}</b></h4>
+      <h4>CÓDIGO: <b>{{ $firstCapitalLetter(winner.codigo) }}</b></h4>
     </template>
 
     <div class="con-content">
