@@ -10,7 +10,7 @@
     </h4>
     <form action="#">
       <div class="mb-4" :class="{ 'form-group--error': $v.form.code.$error }">
-        <label class="text-sm">Codigo del Participante</label>
+        <label class="text-sm">código de Contribuyente</label>
         <vs-input type="number" block class="w-full" v-model="form.code" placeholder="">
           <!-- <template #icon>
               <i class='bx bx-user'></i>
