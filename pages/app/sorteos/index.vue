@@ -30,7 +30,7 @@
       </div>
       <h2 class="mb-2">Ganadores</h2>
       <!-- <pre>{{ winners }}</pre> -->
-      <vs-table v-if="winners.data?.data" :key="keyRamdom">
+      <vs-table v-if="filteredWinners" :key="keyRamdom">
         <template #thead>
           <vs-tr>
             <vs-th> Código </vs-th>
@@ -49,7 +49,7 @@
         <template #tbody>
           <vs-tr
           :key="i"
-          v-for="(tr, i) in $vs.getPage(winners.data?.data, page, max)"
+          v-for="(tr, i) in $vs.getPage(filteredWinners, page, max)"
           :data="tr">
             <vs-td> {{ tr.codigo }} </vs-td>
             <vs-td> {{ tr.aPaterno }} {{ tr.aMaterno }}  {{ tr.nombres }}  </vs-td>
@@ -75,7 +75,7 @@
           No se encontraron resultados
         </template>
         <template #footer>
-          <vs-pagination v-model="page" :length="$vs.getLength(winners.data?.data, max)" />
+          <vs-pagination v-model="page" :length="$vs.getLength(filteredWinners, max)" />
         </template>
       </vs-table>
     </template>
@@ -131,6 +131,11 @@ export default {
     winners() {
       return this.$store.getters['winner/winners']
     },
+    filteredWinners() {
+      const { award } = this.form;
+      const winnersData = this.winners.data?.data || []
+      return award ? winnersData.filter(x => x.idPremio === award) : winnersData
+    },
     gamesDetail() {
       return this.$store.getters['gameDetail/gamesDetail']
     },
@@ -179,23 +184,34 @@ export default {
         method,
         url,
       }).then(resp => {
-        if(!resp.error){
+
+        // console.log("res", resp.data);
+        if(resp.data.msg !== 'Los Premios Fueron agotados') {
           const { data } = resp.data
           this.winner = data
           this.isCreated = true
           this.isLoading = true
-        }else{
-          // aqui la logica mensaje que noy mas ganadores
-          console.log(resp.msg);
+        } else {
+          this.$swal({
+            html:
+              `<img class="small_icon" src="${require("@/static/icon_warning.svg")}"><p class="popup-content-text">${
+                resp.data.msg
+              }</p>`,
+              customClass: {
+                popup: "popup-giveaways",
+                confirmButton: "popup-btn-confirm",
+              },
+            confirmButtonColor: "#eb5757",
+            showConfirmButton: true,
+          })
         }
-    
       })
       .catch(() => {
         console.error('Ocurrio un error con el servicio.')
       })
     },
     onResult({ win, msg, spinCount }) {
-      this.showDialogWinner = win;
+      if(Object.keys(this.winner).length) this.showDialogWinner = win;
     },
     handleWinnerModal(row) {
       this.winner = row
@@ -269,7 +285,7 @@ export default {
       if(reload) {
         this.showDialogWinner = false
         this.isLoading = false
-        this.form.award = ''
+        // this.form.award = ''
         await this.$store.dispatch('winner/initialize')
         this.keyRamdom = Math.random()
       }

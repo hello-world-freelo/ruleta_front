@@ -5,7 +5,7 @@
         ¡Felicidades <b>{{ $firstCapitalLetter(winner.nombres) }} {{ $firstCapitalLetter(winner.aMaterno) }} {{ $firstCapitalLetter(winner.aPaterno) }}</b>!
       </h4>
       <hr>
-      <h4>Nº DOCUMENTO: <b>{{ $firstCapitalLetter(winner.nroDocumento) }}</b></h4>
+      <h4 class="text-lg my-2">Nº DOCUMENTO: <b>{{ $firstCapitalLetter(winner.nroDocumento) }}</b></h4>
       <h4>CÓDIGO: <b>{{ $firstCapitalLetter(winner.codigo) }}</b></h4>
     </template>
 
