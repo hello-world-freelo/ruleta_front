@@ -192,6 +192,7 @@ export default {
           this.isCreated = true
           this.isLoading = true
         } else {
+          this.winner = '';
           this.$swal({
             html:
               `<img class="small_icon" src="${require("@/static/icon_warning.svg")}"><p class="popup-content-text">${
