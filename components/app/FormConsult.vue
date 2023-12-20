@@ -19,7 +19,7 @@
       </div>
 
       <div class="mb-6" :class="{ 'form-group--error': $v.form.document.$error }">
-        <label class="text-sm">DNI</label>
+        <label class="text-sm">Número de Documento</label>
         <vs-input type="number" block class="mb-4" v-model="form.document" placeholder="">
           <!-- <template #icon>
                 <i class='bx bx-lock-open-alt'></i>
@@ -79,7 +79,7 @@ export default {
       document: {
         // required,
         minLength: minLength(8),
-        maxLength: maxLength(8)
+        maxLength: maxLength(13)
       }
     }
   },

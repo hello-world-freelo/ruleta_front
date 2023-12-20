@@ -219,27 +219,60 @@ export default {
       this.showDialogRepresentative = true
     },
     handleRemoveWinner(row) {
-      this.$swal({
-        html:
-          `<img class="small_icon" src="${require("@/static/icon_warning.svg")}"><p class="popup-content-text">¿Desea eliminar el registro?</p>`,
-        customClass: {
-          popup: "popup-giveaways",
-          confirmButton: "popup-btn-confirm",
-          cancelButton: "popup-btn-cancel",
-        },
-        confirmButtonText: "Eliminar",
-        confirmButtonColor: "#eb5757",
-        reverseButtons: true,
-        showCancelButton: true,
-        showConfirmButton: true,
-      }).then((result) => {
-        if (result.value) {
-          this.serviceDeleteItem(row)
-        }
-      })
+      // this.$swal({
+      //   html:
+      //     `<img class="small_icon" src="${require("@/static/icon_warning.svg")}"><p class="popup-content-text">¿Desea eliminar el registro?</p>`,
+      //   customClass: {
+      //     popup: "popup-giveaways",
+      //     confirmButton: "popup-btn-confirm",
+      //     cancelButton: "popup-btn-cancel",
+      //   },
+      //   confirmButtonText: "Eliminar",
+      //   confirmButtonColor: "#eb5757",
+      //   reverseButtons: true,
+      //   showCancelButton: true,
+      //   showConfirmButton: true,
+      // }).then((result) => {
+      //   if (result.value) {
+      //     this.serviceDeleteItem(row)
+      //   }
+      // })
+        this.$swal({
+            html: `
+              <img class="small_icon" src="${require("@/static/icon_warning.svg")}">
+              <p class="popup-content-text">¿Desea eliminar el registro?</p>
+              <div class="mb-6 flex flex-col text-area">
+                  <textarea class="vs-input area"id="idSustento" placeholder="Ingrese sustento para eliminar"  style="width: 100%; height: 150px; transition: border 0.3s;"></textarea>
+                </div>
+            `,
+            customClass: {
+              popup: "popup-giveaways",
+              confirmButton: "popup-btn-confirm",
+              cancelButton: "popup-btn-cancel",
+            },
+            confirmButtonText: "Eliminar",
+            confirmButtonColor: "#eb5757",
+            reverseButtons: true,
+            showCancelButton: true,
+            showConfirmButton: true,
+          }).then((result) => {
+            if (result.value) {
+              const textarea = document.getElementById('idSustento');
+              const sustento = textarea.value.trim();
+              if (sustento === '' || sustento.length < 4) {
+                this.$swal({
+                  title: 'Error',
+                  text: 'Por favor, ingrese un sustento antes de eliminar el registro.',
+                  icon: 'error',
+                });
+              } else {
+                this.serviceDeleteItem(row, sustento);
+              }
+            }
+          });
     },
 
-    serviceDeleteItem(row) {
+    serviceDeleteItem(row, sustento) {
       const {
         idParticipante,
         idGanador,
@@ -255,6 +288,7 @@ export default {
         "fecha": fechaEntrega,
         "flag": 0,
         "estadoEntrega": 0,
+        "sustento": sustento,
         comentario,
       }
 
