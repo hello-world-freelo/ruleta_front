@@ -28,8 +28,9 @@
           @onResult="onResult"
         ></WinWheel>
       </div>
-      <h2 class="mb-2">Ganadores</h2>
+      <h2 class="mb-2 text-center"><b>Lista de Ganadores</b></h2>
       <!-- <pre>{{ winners }}</pre> -->
+      <vs-button class="mb-2" @click="exportToPdf">Exportar a PDF</vs-button>
       <vs-table v-if="filteredWinners" :key="keyRamdom">
         <template #thead>
           <vs-tr>
@@ -54,7 +55,10 @@
             <vs-td> {{ tr.codigo }} </vs-td>
             <vs-td> {{ tr.aPaterno }} {{ tr.aMaterno }}  {{ tr.nombres }}  </vs-td>
             <vs-td> {{ tr.nroDocumento }} </vs-td>
-            <vs-td> {{ tr.estadoTipoGanador }} </vs-td>
+            <vs-td> 
+              <span  v-if="tr.tipoGanador === 1" class="tipo-titular"> {{ tr.estadoTipoGanador }} </span> 
+              <span  v-if="tr.tipoGanador === 2" class="tipo-accesitario"> {{ tr.estadoTipoGanador }} </span> 
+             </vs-td>
             <vs-td> {{ tr.orden }} </vs-td>
             <vs-td> {{ tr.premio }} </vs-td>
             <vs-td> {{ tr.fechaEntrega }} </vs-td>
@@ -316,6 +320,7 @@ export default {
         console.error('Ocurrio un error con el servicio.')
       })
     },
+
     async closeModal(reload) {
       if(reload) {
         this.showDialogWinner = false
@@ -325,6 +330,37 @@ export default {
         this.keyRamdom = Math.random()
       }
       this.showDialogRepresentative = false
+    },
+    exportToPdf(){
+     let idPremio = this.form.award ? this.form.award : 0;
+     const url = `/eventos/generar-pdf/${idPremio}`
+      const method = "get"
+      return protectedService({
+    method,
+    url,
+    responseType: 'arraybuffer', // Para manejar la respuesta como un array de bytes (Blob)
+  })
+    .then(response => {
+      // Crear un Blob a partir de la respuesta
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+
+      // Crear una URL de datos para el Blob
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      // Crear un enlace temporal y hacer clic en él para iniciar la descarga
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'archivo.pdf';
+      link.click();
+
+      // Liberar la URL de datos después de un tiempo para evitar pérdida de memoria
+      setTimeout(() => {
+        window.URL.revokeObjectURL(blobUrl);
+      }, 100);
+    })
+    .catch(() => {
+      console.error('Ocurrió un error con el servicio.');
+    });
     }
   }
 }
@@ -332,5 +368,23 @@ export default {
 <style lang="scss" scoped>
 .win-wheel {
   min-height: 500px;
+}
+.tipo-accesitario{
+  display: inline-block; width: 100%;
+  text-align: center;
+  padding: 5px;
+  background-color: #d1cd4af7;
+  color: white;
+  border-radius: 5%;
+  font-weight: bold;
+}
+.tipo-titular{
+  display: inline-block; width: 100%;
+  text-align: center;
+  padding: 5px;
+  background-color: #5b9f60;
+  color: white;
+  border-radius: 5%;
+  font-weight: bold;
 }
 </style>
