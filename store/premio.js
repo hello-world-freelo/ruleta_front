@@ -3,26 +3,26 @@ import { EmptyResponse } from "@/plugins/utils"
 
 export const state = () => {
   return {
-    awards: []
+    premios: []
   }
 }
 
 export const getters = {
-  awards ({ awards }) {
-    return awards || []
+  premios ({ premios }) {
+    return premios || []
   },
-  awardsById: (state) => (id) => {
-    return state.awards.find(product => product.id === id)
+  premiosById: (state) => (id) => {
+    return state.premios.find(product => product.id === id)
   }
 }
 
 export const mutations = {
   SET_AWARDS(state, payload) {
-    state.awards = payload
+    state.premios = payload
   },
-  UPDATE_AWARD (state, award) {
-    const index = state.awards.findIndex(e => e.id === ad.id)
-    state.awards.splice(index, 1, award)
+  UPDATE_AWARD (state, premios) {
+    const index = state.premios.findIndex(e => e.id === ad.id)
+    state.premios.splice(index, 1, premios)
   },
 }
 
@@ -39,7 +39,7 @@ export let actions = {
 
   async get ({ commit }) {
     try {
-      const response = await protectedService.get('/eventos/lista-premio-valid')
+      const response = await protectedService.get('/eventos/lista-premio')
       if (response.data) commit('SET_AWARDS', response.data)
       return response ?? { error: new EmptyResponse() }
     } catch (error) {

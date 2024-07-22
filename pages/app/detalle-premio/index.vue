@@ -1,59 +1,72 @@
 <template>
   <div>
     <div>
-      <h1 class="text-xl font-medium">Premios</h1>
+      <h1 class="text-xl font-medium">Detalle Premio</h1>
       <div class="my-4">
         <vs-button style="--vs-button-margin: 0" @click="showModal=true">
-          Crear premio
+          Detalle Premio
         </vs-button>
       </div>
     </div>
     <template>
-      <div class="center" v-if="premios.length">
+      <div class="center">
         <vs-table v-model="rowSelected">
           <template #thead>
             <vs-tr>
-              <vs-th> Nombre </vs-th>
-              <vs-th> Fecha de creación </vs-th>
+              <vs-th> Evento </vs-th>
+              <vs-th> Juego </vs-th>
+              <vs-th> Premio </vs-th>
+              <vs-th> Cantidad </vs-th>
               <vs-th class="flex justify-center"> Acciones </vs-th>
             </vs-tr>
           </template>
           <template #tbody>
             <vs-tr
-              :key="i"
-              v-for="(tr, i) in $vs.getPage(premios, page, max)"
+              :key="tr.idPremioDetalleJuego"
+              v-for="(tr) in $vs.getPage(premiosDetail, page, max)"
               :data="tr"
               :is-selected="false"
               not-click-selected
               open-expand-only-td
             >
               <vs-td>
-                {{ tr.nombre }}
+                {{ tr.evento }}
               </vs-td>
               <vs-td>
-                {{ $formatDate(tr.created_at, "DD-MM-YYYY") }}
+                {{ tr.juego }}
+              </vs-td>
+              <vs-td>
+                {{ tr.premio }}
+              </vs-td>
+              <vs-td>
+                {{ tr.cantidad }}
               </vs-td>
 
               <vs-td>
-                <div class="flex justify-center">
-                  <vs-button size="small" @click="showModal = true, rowSelected = tr" flat icon>
+                <div class="flex justify-center" >
+                  <vs-button size="small" @click="showModal = true, rowSelected = tr" flat icon :disabled="tr.isValidEvento === 0">
                     Editar
                   </vs-button>
-                  <vs-button @click="deleteElement(tr)" size="small" border danger>
+                  <vs-button @click="deleteElement(tr)" size="small" border danger :disabled="tr.isValidEvento === 0">
                     Eliminar
                   </vs-button>
                 </div>
               </vs-td>
+
+
             </vs-tr>
           </template>
           <template #footer>
-            <vs-pagination v-model="page" :length="$vs.getLength(premios, max)" />
+            <vs-pagination v-model="page" :length="$vs.getLength(premiosDetail, max)" />
+          </template>
+          <template #notFound>
+            No se encontraron resultados
           </template>
         </vs-table>
       </div>
     </template>
 
-    <ModalAward
+    <ModalPremioDetail
     v-if="showModal"
     :item="rowSelected"
     @closeModal="closeModal"/>
@@ -61,26 +74,26 @@
 </template>
 <script>
 import { protectedService } from "@/plugins/axios"
-import ModalAward from "@/components/app/ModalAward"
+import ModalPremioDetail from "@/components/app/ModalPremioDetail"
 export default {
   layout: "layout_app",
   components: {
-    ModalAward
+    ModalPremioDetail
   },
   data() {
     return {
       rowSelected: null,
       showModal: false,
       page: 1,
-      max: 10,
-    };
+      max: 10
+    }
   },
   fetch({ store }) {
-    store.dispatch('premio/initialize')
+    store.dispatch('premioDetail/initialize')
   },
   computed: {
-    premios() {
-      return this.$store.getters['premio/premios']
+    premiosDetail() {
+      return this.$store.getters['premioDetail/premiosDetail']
     }
   },
   methods: {
@@ -108,10 +121,10 @@ export default {
       }
     },
 
-    serviceDeleteItem({ idPremio }) {
+    serviceDeleteItem({ idPremioDetalleJuego }) {
       protectedService({
-        method: "delete",
-        url: `/eventos/eliminar-premio/${idPremio}`,
+        method: "put",
+        url: `/eventos/eliminar-detalle-premio/${idPremioDetalleJuego}`,
       }).then(() => {
         this.forceReload()
         this.$swal({
@@ -136,7 +149,7 @@ export default {
     },
 
     forceReload() {
-      this.$store.dispatch('premio/initialize')
+      this.$store.dispatch('premioDetail/initialize')
     }
   }
 }

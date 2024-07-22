@@ -6,7 +6,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 my-6">
         <div class="w-full" v-if="gamesDetail.length">
           <vs-select :disabled="isLoading" :block="true" filter placeholder="Seleccionar evento" v-model="form.event" label="Seleccionar un evento">
-            <vs-option v-for="(item, i) in gamesDetail" :key="i" :label="item.evento" :value="item.idEvento">
+            <vs-option v-for="(item, i) in gamesDetail" :key="i" :label="item.evento" :value="item.idEvento" v-show="item.isValidEvento === 1">
               {{ item.evento }}
             </vs-option>
           </vs-select>
@@ -55,9 +55,9 @@
             <vs-td> {{ tr.codigo }} </vs-td>
             <vs-td> {{ tr.aPaterno }} {{ tr.aMaterno }}  {{ tr.nombres }}  </vs-td>
             <vs-td> {{ tr.nroDocumento }} </vs-td>
-            <vs-td> 
-              <span  v-if="tr.tipoGanador === 1" class="tipo-titular"> {{ tr.estadoTipoGanador }} </span> 
-              <span  v-if="tr.tipoGanador === 2" class="tipo-accesitario"> {{ tr.estadoTipoGanador }} </span> 
+            <vs-td>
+              <span  v-if="tr.tipoGanador === 1" class="tipo-titular"> {{ tr.estadoTipoGanador }} </span>
+              <span  v-if="tr.tipoGanador === 2" class="tipo-accesitario"> {{ tr.estadoTipoGanador }} </span>
              </vs-td>
             <vs-td> {{ tr.orden }} </vs-td>
             <vs-td> {{ tr.premio }} </vs-td>
@@ -124,7 +124,8 @@ export default {
   },
   watch: {
     gamesDetail([data]) {
-      this.form.event = data.idEvento
+
+      this.form.event = data.isValidEvento == 1 ? data.idEvento: '';
     }
   },
   computed: {
@@ -190,7 +191,7 @@ export default {
       }).then(resp => {
 
         // console.log("res", resp.data);
-        if(resp.data.msg !== 'Los Premios Fueron agotados') {
+        if(!resp.data.error) {
           const { data } = resp.data
           this.winner = data
           this.isCreated = true
@@ -294,7 +295,7 @@ export default {
         "flag": 0,
         "estadoEntrega": 0,
         "sustento": sustento,
-        comentario,
+        "comentario": comentario,
       }
 
       protectedService({

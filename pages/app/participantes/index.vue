@@ -11,6 +11,7 @@
     <template>
       <div class="center" v-if="participants.data?.data.length">
         <!-- <pre>{{ participants.data.data }}</pre> -->
+
         <vs-table>
           <template #header>
             <vs-input v-model="search" border placeholder="Buscar participante" />
@@ -74,7 +75,7 @@ export default {
       showModal: false,
       search: '',
       page: 1,
-      max: 50
+      max: 10
     };
   },
   fetch({ store }) {

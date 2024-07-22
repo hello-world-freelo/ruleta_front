@@ -108,7 +108,7 @@ export default {
                 <b>¡HOLA ${data.data[0].nombres}!</b>
               </span>
               <span style="font-weight:normal;display:block;font-size:14px">
-                Estás oficialmente en el Sorteo 2023 con el código <b>${data.data[0].codigo}</b>. <br> ¡Buena suerte!
+                Estás oficialmente en el Sorteo 2024 con el código <b>${data.data[0].codigo}</b>. <br> ¡Buena suerte!
               </span>
             </p>`
           this.$swal.fire({

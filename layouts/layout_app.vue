@@ -70,6 +70,12 @@
             </template>
             Detalle juego
           </vs-sidebar-item>
+          <vs-sidebar-item id="detalle-premio" to="/app/detalle-premio">
+            <template #icon>
+              <i class="fa-duotone fa-trophy"></i>
+            </template>
+            Detalle Premio
+          </vs-sidebar-item>
           <vs-sidebar-item id="participantes" to="/app/participantes">
             <template #icon>
               <i class="fa-regular fa-people-group"></i>

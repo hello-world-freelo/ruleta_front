@@ -44,10 +44,10 @@
 
               <vs-td>
                 <div class="flex justify-center">
-                  <vs-button size="small" @click="showModal = true, rowSelected = tr" flat icon>
+                  <vs-button size="small" @click="showModal = true, rowSelected = tr" flat icon :disabled="tr.isValidEvento === 0">
                     Editar
                   </vs-button>
-                  <vs-button @click="deleteElement(tr)" size="small" border danger>
+                  <vs-button @click="deleteElement(tr)" size="small" border danger :disabled="tr.isValidEvento === 0">
                     Eliminar
                   </vs-button>
                 </div>
@@ -85,7 +85,7 @@ export default {
       rowSelected: null,
       showModal: false,
       page: 1,
-      max: 5
+      max: 10
     }
   },
   fetch({ store }) {
@@ -121,10 +121,10 @@ export default {
       }
     },
 
-    serviceDeleteItem({ idJuego }) {
+    serviceDeleteItem({ idDetalleJ }) {
       protectedService({
-        method: "delete",
-        url: `/eventos/eliminar-juego/${idJuego}`,
+        method: "put",
+        url: `/eventos/eliminar-detalle-juego/${idDetalleJ}`,
       }).then(() => {
         this.forceReload()
         this.$swal({

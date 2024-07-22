@@ -3,26 +3,26 @@ import { EmptyResponse } from "@/plugins/utils"
 
 export const state = () => {
   return {
-    awards: []
+    premiosDetail: []
   }
 }
 
 export const getters = {
-  awards ({ awards }) {
-    return awards || []
+  premiosDetail ({ premiosDetail }) {
+    return premiosDetail || []
   },
-  awardsById: (state) => (id) => {
-    return state.awards.find(product => product.id === id)
+  premiosDetailById: (state) => (id) => {
+    return state.premiosDetail.find(product => product.id === id)
   }
 }
 
 export const mutations = {
-  SET_AWARDS(state, payload) {
-    state.awards = payload
+  SET_GAMES_DETAIL(state, payload) {
+    state.premiosDetail = payload.data || []
   },
-  UPDATE_AWARD (state, award) {
-    const index = state.awards.findIndex(e => e.id === ad.id)
-    state.awards.splice(index, 1, award)
+  UPDATE_GAME_DETAIL (state, award) {
+    const index = state.premiosDetail.findIndex(e => e.id === ad.id)
+    state.premiosDetail.splice(index, 1, award)
   },
 }
 
@@ -39,8 +39,8 @@ export let actions = {
 
   async get ({ commit }) {
     try {
-      const response = await protectedService.get('/eventos/lista-premio-valid')
-      if (response.data) commit('SET_AWARDS', response.data)
+      const response = await protectedService.get('/eventos/lista-detalle-premio')
+      if (response.data) commit('SET_GAMES_DETAIL', response.data)
       return response ?? { error: new EmptyResponse() }
     } catch (error) {
       return { error }
@@ -50,8 +50,9 @@ export let actions = {
   async getOne ({ commit }, { id } = {}) {
     try {
       if (!id) throw new Error('You need an ID to update the award')
-      const response = await protectedService.get(`/eventos/lista-premio/${id}`)
-      if (response?.data) commit('UPDATE_AWARD', response.data)
+      const response = await protectedService.get(`/eventos/lista-detalle-premio/${id}`)
+      console.log("getOne", response.data);
+      if (response?.data) commit('UPDATE_GAME_DETAIL', response.data)
       return response ?? { error: new EmptyResponse() }
     } catch (error) {
       return { error }

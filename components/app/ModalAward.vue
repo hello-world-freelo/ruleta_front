@@ -11,11 +11,10 @@
         </vs-input>
       </div>
 
-      <div class="mb-8">
+      <!-- <div class="mb-8">
         <vs-input type="number" block v-model="form.quantity" label="Cantidad">
-          <!-- <template #icon> @ </template> -->
         </vs-input>
-      </div>
+      </div> -->
 
       <template #footer>
         <div class="footer-dialog">
@@ -48,7 +47,6 @@ export default {
       },
       form: {
         name: "",
-        quantity: ""
       }
     }
   },
@@ -57,9 +55,6 @@ export default {
       name: {
         required,
         minLength: minLength(2)
-      },
-      quantity: {
-        required
       }
     }
   },
@@ -76,9 +71,8 @@ export default {
 
     async typeRequestEvaluation() {
       if (!this.isRegister) {
-        const { nombre, cantidad } = this.item
+        const { nombre } = this.item
         this.form.name = nombre
-        this.form.quantity = cantidad
       }
     },
 
@@ -90,8 +84,7 @@ export default {
 
       const payload = {
         idUsuario: this.getIdUser,
-        nombre: this.form.name,
-        cantidad: this.form.quantity
+        nombre: this.form.name
       }
 
       this.onSubmit(payload)

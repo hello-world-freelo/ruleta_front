@@ -102,6 +102,7 @@ export default {
         "fecha": this.form.date,
         estadoEntrega,
         "comentario": this.form.comment,
+        "sustento": this.form.comment,
         ...(this.isCreated && {
           idParticipante,
           codigo,
