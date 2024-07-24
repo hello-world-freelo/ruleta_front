@@ -30,7 +30,8 @@ export default {
   env: {
     HOST_PUBLIC: process.env.HOST_PUBLIC,
     API_URL_SPA: process.env.API_URL_SPA,
-    API_URL_SSR: process.env.API_URL_SSR
+    API_URL_SSR: process.env.API_URL_SSR,
+    URL_BASE_URL: process.env.URL_BASE_URL
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

@@ -2,7 +2,6 @@
   <div>
     <h2 class="text-xl font-medium">Sorteos</h2>
     <template>
-
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 my-6">
         <div class="w-full" v-if="gamesDetail.length">
           <vs-select :disabled="isLoading" :block="true" filter placeholder="Seleccionar evento" v-model="form.event" label="Seleccionar un evento">
@@ -124,7 +123,6 @@ export default {
   },
   watch: {
     gamesDetail([data]) {
-
       this.form.event = data.isValidEvento == 1 ? data.idEvento: '';
     }
   },
@@ -160,6 +158,7 @@ export default {
       keyRamdom: Math.random(),
       isCreated: false,
       winner: {},
+      audio: null,
       showDialogWinner: false,
       showDialogRepresentative: false,
       isTweenMaxLoaded: false,
@@ -183,14 +182,16 @@ export default {
   },
   methods: {
     onButtonPress() {
-      const url = `/eventos/sortear-participantes/${this.form.award}`
-      const method = "get"
+      this.playSound('tambor.mp3');
+      const url = `/eventos/sortear-participantes/${this.form.award}`;
+      const method = "get";
       return protectedService({
         method,
         url,
       }).then(resp => {
-
         // console.log("res", resp.data);
+        // Maneja la respuesta aquí
+
         if(!resp.data.error) {
           const { data } = resp.data
           this.winner = data
@@ -198,6 +199,7 @@ export default {
           this.isLoading = true
         } else {
           this.winner = '';
+          this.audio.pause();
           this.$swal({
             html:
               `<img class="small_icon" src="${require("@/static/icon_warning.svg")}"><p class="popup-content-text">${
@@ -214,16 +216,23 @@ export default {
       })
       .catch(() => {
         console.error('Ocurrio un error con el servicio.')
-      })
+      });
+
     },
+
     onResult({ win, msg, spinCount }) {
-      if(Object.keys(this.winner).length) this.showDialogWinner = win;
+      this.audio.pause();
+      if(Object.keys(this.winner).length){
+        this.showDialogWinner = win;
+        this.playSound('ganador.mp3');
+      }
     },
     handleWinnerModal(row) {
       this.winner = row
       this.isCreated = false
       this.showDialogRepresentative = true
     },
+
     handleRemoveWinner(row) {
       // this.$swal({
       //   html:
@@ -362,6 +371,29 @@ export default {
     .catch(() => {
       console.error('Ocurrió un error con el servicio.');
     });
+    },
+    playSound(urlAudio) {
+      if (this.audio) {
+        this.audio.pause();
+        this.audio.currentTime = 0;
+      }
+      const baseUrl = process.env.URL_BASE_URL || '';
+      console.log(baseUrl);
+      this.audio = new Audio(`${baseUrl}/${urlAudio}`);
+      this.audio.play()
+        .then(() => {
+          console.log('Reproducción iniciada');
+        })
+        .catch(error => {
+          console.error('Error al reproducir el sonido:', error);
+        });
+    },
+    stopSound() {
+      if (this.audio) {
+        this.audio.pause();
+        this.audio.currentTime = 0;
+        console.log('Reproducción detenida');
+      }
     }
   }
 }
